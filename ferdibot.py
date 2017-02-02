@@ -32,7 +32,7 @@ class Message:
         self.date = json['date']
         self.id = json['message_id']
         self.frm = User(bot, json['from'])
-        self.text = json['text']
+        self.text = json.get('text')
         self.chat = Chat(bot, json['chat'])
 
     def __str__(self):
@@ -75,6 +75,8 @@ class FerdiBot:
                     if confirmed < update['update_id']:
                         confirmed = update['update_id']
 
+                    log.debug(update)
+
                     if 'message' in update:
                         yield Message(self, update['message'])
                     else:
@@ -86,7 +88,7 @@ class FerdiBot:
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     for update in FerdiBot().updates():
-        log.debug("[MESSAGE] {}".format(update))
         if isinstance(update, Message):
+            log.info("[MESSAGE] {}".format(update))
             update.reply("Sorry " + update.frm.first_name + ", I have no features yet :(")
             
