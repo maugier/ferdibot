@@ -1,0 +1,3 @@
+# FerdiBot
+
+Minimalistic Telegram bot
